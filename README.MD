@@ -30,34 +30,37 @@ O sistema contém as seguintes funcionalidades:
 ## **4. Necessidades e Funcionalidades**
 
 * #N001. Cadastrar usuário
-  * #N001-F001. Adicionar criação de novo mundo
-  * #N001-F002. Adiconar exlusão de mundo
-  * #N001-F003. Adicionar componentes do mundo, como anotações, localidades e personagens
-  * #N001-F004. Adicionar funcionalidade para a edição do mundo
-  * #N001-F005. Publicar criação
-  * #N001-F006. Mostrar catálogo das criações de outros usuários
+  * #N001-F001. criação de conta do usuário na plataforma
+  * #N001-f002. Login do usuário na plataforma
+* #N002. Criação de mundo
+  * #N002-F001. Adicionar criação de novo mundo
+  * #N002-F002. Adiconar exlusão de mundo
+  * #N002-F003. Adicionar componentes do mundo, como anotações, localidades e personagens
+  * #N002-F004. Adicionar funcionalidade para a edição do mundo
+  * #N002-F005. Publicar criação
+  * #N002-F006. Mostrar catálogo das criações de outros usuários
 
-* #N002. Publicação do mundo
-  * #N002-F001. Pequena descrição sobre o mundo para os usuários
-  * #N001-F002. Possibilidade de ver quantas pessoas se interessaram pela criação
-  * #N001-F003. Caixa de mensagens para outros usuários darem opinião sobre o mundo
-  * #N001-F004. Adicionar funcionalidade para a edição do mundo
+* #N003. Publicação do mundo
+  * #N003-F001. Pequena descrição sobre o mundo para os usuários
+  * #N003-F002. Possibilidade de ver quantas pessoas se interessaram pela criação
+  * #N003-F003. Caixa de mensagens para outros usuários darem opinião sobre o mundo
+  * #N003-F004. Adicionar funcionalidade para a edição do mundo
 
  
-* #N003. Login
-  * #N003-F001. Entrar com a conta criada no wolrdbuilding
-  * #N003-F002. Entrar com google account
+* #N004. Login
+  * #N004-F001. Entrar com a conta criada no wolrdbuilding
+  * #N004-F002. Entrar com google account
 
-* #N004. Interações entre usuários
-  * #N001-F001. Possibilidade de ver o catálogo de mundos
-  * #N002-F002. Possibilidade de compra e de venda, caso seja necessário
-  * #N003-F003. Possibilidade de seguir o criador e ser notificado se postar algo mais
-  * #N004-F004. Possibilidade de deixar de seguir o criador, perdendo assim de ser notificado de suas próximas postagens
-  * #N004-F005. Possibilidade de saber quem está seguindo
-  * #N004-F005. Possibilidade de adcionar um cometário sobre o mundo
-  * #N004-F005. Possibilidade de excluir um cometário sobre o mundo
-  * #N004-F005. Possibilidade de dar nota para criações de outros usuários
-  * #N004-F005. Possibilidade de compartilhar a criação dos outros usuários ou sua própria em outras redes sociais
+* #N005. Interações entre usuários
+  * #N005-F001. Possibilidade de ver o catálogo de mundos
+  * #N005-F002. Possibilidade de compra e de venda, caso seja necessário
+  * #N005-F003. Possibilidade de seguir o criador e ser notificado se postar algo mais
+  * #N005-F004. Possibilidade de deixar de seguir o criador, perdendo assim de ser notificado de suas próximas postagens
+  * #N005-F005. Possibilidade de saber quem está seguindo
+  * #N005-F005. Possibilidade de adcionar um cometário sobre o mundo
+  * #N005-F005. Possibilidade de excluir um cometário sobre o mundo
+  * #N005-F005. Possibilidade de dar nota para criações de outros usuários
+  * #N005-F005. Possibilidade de compartilhar a criação dos outros usuários ou sua própria em outras redes sociais
 
 
 
