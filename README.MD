@@ -21,10 +21,10 @@ O sistema contém as seguintes funcionalidades:
 
 ### 3.1 Usuário
 
-| **Descrição** | Pessoa que utiliza o sistema para cadastrar diários                      |
+| **Descrição** | Pessoa que utiliza o sistema para criar mundos                      |
 | --------------------- | :-------------------------------------------------------------------------- |
-| Papel                 | Utilizar o sistema                                                          |
-| Insumos ao sistema    | Cadastro dos diários (criação, edição e deleção) |
+| Papel                 | Utilizar o sistema o sistema                                                          |
+| Insumos ao sistema    | Criação do mundo (criar, deletar, editar e publicar) |
 
 
 ## **4. Necessidades e Funcionalidades**
@@ -39,6 +39,8 @@ O sistema contém as seguintes funcionalidades:
   * #N002-F004. Adicionar funcionalidade para a edição do mundo
   * #N002-F005. Publicar criação
   * #N002-F006. Mostrar catálogo das criações de outros usuários
+  * #N002-F007. Possibilidade de adcionar um cometário sobre o mundo de outros usuários
+  * #N002-F008. Possibilidade de compartilhar a criação dos outros usuários ou sua própria em outras redes sociais
 
 * #N003. Publicação do mundo
   * #N003-F001. Pequena descrição sobre o mundo para os usuários
@@ -53,17 +55,10 @@ O sistema contém as seguintes funcionalidades:
 
 * #N005. Interações entre usuários
   * #N005-F001. Possibilidade de ver o catálogo de mundos
-  * #N005-F002. Possibilidade de compra e de venda, caso seja necessário
   * #N005-F003. Possibilidade de seguir o criador e ser notificado se postar algo mais
   * #N005-F004. Possibilidade de deixar de seguir o criador, perdendo assim de ser notificado de suas próximas postagens
-  * #N005-F005. Possibilidade de saber quem está seguindo
-  * #N005-F005. Possibilidade de adcionar um cometário sobre o mundo
   * #N005-F005. Possibilidade de excluir um cometário sobre o mundo
-  * #N005-F005. Possibilidade de dar nota para criações de outros usuários
-  * #N005-F005. Possibilidade de compartilhar a criação dos outros usuários ou sua própria em outras redes sociais
-
-
-
+  
 ## **6. Arquitetura**
  * #N001. Frontend
   * HTML, CSS, JavaScript, TypeScript e React
