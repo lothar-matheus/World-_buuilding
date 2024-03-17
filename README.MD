@@ -65,6 +65,22 @@ O sistema contém as seguintes funcionalidades:
 
 
 ## **6. Arquitetura**
+ * #N001. Frontend
+  * HTML, CSS, JavaScript, TypeScript e React
 
+  * #N002. Backend
+    * ...
+  
+  * #N003. Banco de Dados
+    *MongoDB Atlas
+    
+  * Infraestrutura
+    * Vercel
 
 ## 7. Configuração Ambiente
+  * Instalação de Ferramentas
+  * Configuração do repositório
+  * Configuração do FrontEnd
+  * Configuração do Backend
+  * Configuração do banco de dados
+  * Testes e Depuração
