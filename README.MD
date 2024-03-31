@@ -64,7 +64,8 @@ O sistema contém as seguintes funcionalidades:
   * HTML, CSS, JavaScript, TypeScript e React
 
   * #N002. Backend
-    * ...
+    * Nodesj
+    * Python
   
   * #N003. Banco de Dados
     *MongoDB Atlas
