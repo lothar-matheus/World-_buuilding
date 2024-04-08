@@ -3,6 +3,8 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import Welcome from './user/Welcome';
+import '../App.jsx';
+import '../App.css';
 
 // Configurações do Firebase
 const firebaseConfig = {

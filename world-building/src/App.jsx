@@ -14,10 +14,10 @@ function App() {
             path="/"
             element={
               <>
-                <h1>Welcome to World Building!</h1>
-                <p>A system to help writers, RPG masters, or anyone interested in creating a fictional world.</p>
+                <h1>Bem-Vindo World Building!</h1>
+                <p>Um sistema onde você pode organizar seus mundos fictícios.</p>
                 <Link to="/create">
-                  <button className='comeceAgora'>Get Started Now!</button>
+                  <button className='comeceAgora'>Comece por aqui!</button>
                 </Link>
                 <Link to="/login">
                   <button>Login</button>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { initializeApp } from 'firebase/app';
 import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-
+import '../App.css';
 
 
 // configurações do firebase
