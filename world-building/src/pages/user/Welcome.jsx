@@ -1,6 +1,4 @@
 import { Link } from 'react-router-dom';
-
-
 import '../../App.css'
 
 const Welcome = ({ email }) => {
@@ -9,7 +7,7 @@ const Welcome = ({ email }) => {
       <h1>Bem-vindo!</h1>
       <p>Olá, {email}</p>
 
-      <Link to="/CreateWorld">
+      <Link to="/create-world"> {/* Atualizado para redirecionar para "/create-world" */}
         <button>Clique aqui para criar um mundo</button>
       </Link>
     </div>

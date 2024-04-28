@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './App.css';
 import Create from './pages/Create';
 import Login from './pages/Login'; // Importe o componente Login
+import CreateWorld from './pages/user/CreateWorld'
 
 function App() {
   return (
@@ -9,7 +10,10 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/create" element={<Create />} />
-          <Route path="/login" element={<Login />} /> {/* Nova rota para o componente Login */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/create-world" element={<CreateWorld />} />
+
+          
           <Route
             path="/"
             element={
@@ -21,7 +25,8 @@ function App() {
                 </Link>
                 <Link to="/login">
                   <button>Login</button>
-                </Link> {/* Adicione um botão para navegar para a tela de login */}
+                </Link>
+                
               </>
             }
           />
