@@ -1,7 +1,9 @@
 // WorldList.jsx
 import React, { useState, useEffect } from 'react';
-import { getDatabase, ref, onValue } from 'firebase/database';
+import { getDatabase, ref, onValue,remove } from 'firebase/database';
 import firebaseConfigWorld from '../../../firebaseWorld';
+
+
 
 const WorldList = () => {
   const [worlds, setWorlds] = useState([]);
@@ -21,6 +23,18 @@ const WorldList = () => {
     return () => unsubscribe();
   }, [db]);
 
+  //usando remove
+  const handleDeleteWorld = (worldId) => {
+    const worldRef = ref(db, `mundo/${worldId}`);
+    remove(worldRef)
+      .then(() => {
+        console.log('Mundo deletado com sucesso!');
+      })
+      .catch((error) => {
+        console.error('Erro ao deletar o mundo', error);
+      });
+  };
+
   return (
     <div>
       <h1>Mundos Criados</h1>
@@ -31,6 +45,9 @@ const WorldList = () => {
             <p>Criador: {world.criador}</p>
             <p>Sistema: {world.sistema}</p>
             <p>Notas: {world.notes}</p>
+            <button>Explore!</button>
+            <button>Editar</button>
+            <button onClick={() => handleDeleteWorld(world.id)}>Excluir</button>
           </li>
         ))}
       </ul>
