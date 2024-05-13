@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getDatabase, ref, push, set } from 'firebase/database';
 import './userCss/createWorld.css';
 import firebaseConfigWorld from '../../firebaseWorld';
+import { Link } from 'react-router-dom';
 
 const CreateWorld = () => {
   const [worldName, setWorldName] = useState('');
@@ -9,7 +10,8 @@ const CreateWorld = () => {
   const [creatorName, setCreatorName] = useState('Matheus');
   const [systemName, setSystemName] = useState('D&D');
   const [notes, setNotes] = useState('');
-  const [editingWorld, setEditingWorld] = useState(null); // Estado para armazenar o ID do mundo sendo editado
+  const [editingWorld, setEditingWorld] = useState(null);
+  const [showRedirectButton, setShowRedirectButton] = useState(false); // New state to control button visibility
   const db = getDatabase();
 
   // Função para carregar os dados do mundo atualmente em edição, se houver
@@ -62,6 +64,7 @@ const CreateWorld = () => {
       setCreatorName('');
       setSystemName('');
       setNotes('');
+      setShowRedirectButton(true); // Set the state to show the redirect button
     }).catch((error) => {
       // Se ocorrer um erro durante a criação do mundo, exibe o erro no console
       console.error('Erro ao criar mundo:', error);
@@ -108,6 +111,11 @@ const CreateWorld = () => {
         </label>
         <button type="submit">Criar Mundo</button>
       </form>
+      {showRedirectButton && (
+        <Link to="/world-list">
+          <button>Ver Mundos Criados</button>
+        </Link>
+      )}
     </div>
   );
 };

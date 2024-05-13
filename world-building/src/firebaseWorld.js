@@ -1,4 +1,4 @@
-//import { initializeApp } from 'firebase/app';
+import { initializeApp } from 'firebase/app';
 
 const firebaseConfigWorld = {
   apiKey: "AIzaSyB81OkcBZrWGfqW2BPpgbnLjUP_hwPH0Oc",
