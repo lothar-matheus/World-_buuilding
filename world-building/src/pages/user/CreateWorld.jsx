@@ -1,76 +1,97 @@
 import React, { useState, useEffect } from 'react';
-import { getDatabase, ref, push, set } from 'firebase/database';
-import './userCss/createWorld.css';
+import { getDatabase, ref, push, set, onValue } from 'firebase/database';
+import { useLocation } from 'react-router-dom';
 import firebaseConfigWorld from '../../firebaseWorld';
 import { Link } from 'react-router-dom';
 
 const CreateWorld = () => {
   const [worldName, setWorldName] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-  const [creatorName, setCreatorName] = useState('Matheus');
-  const [systemName, setSystemName] = useState('D&D');
+  const [creatorName, setCreatorName] = useState('');
+  const [systemName, setSystemName] = useState('');
   const [notes, setNotes] = useState('');
   const [editingWorld, setEditingWorld] = useState(null);
-  const [showRedirectButton, setShowRedirectButton] = useState(false); // New state to control button visibility
+  const [showRedirectButton, setShowRedirectButton] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
   const db = getDatabase();
+  const location = useLocation();
 
-  // Função para carregar os dados do mundo atualmente em edição, se houver
+  useEffect(() => {
+    if (location.state && location.state.editingWorld) {
+      const { id, name, criador, sistema, notes } = location.state.editingWorld;
+      setWorldName(name);
+      setCreatorName(criador);
+      setSystemName(sistema);
+      setNotes(notes);
+      setEditingWorld({ id, name, criador, sistema, notes });
+    }
+  }, [location.state]);
+
   useEffect(() => {
     if (editingWorld) {
-      const worldRef = ref(db, `mundo/${editingWorld}`);
-      // Obtém os dados do mundo atual e define os valores nos estados
-      const fetchData = async () => {
-        try {
-          const snapshot = await worldRef.get();
-          if (snapshot.exists()) {
-            const worldData = snapshot.val();
-            setWorldName(worldData.name);
-            setCreatorName(worldData.criador);
-            setSystemName(worldData.sistema);
-            setNotes(worldData.notes);
-          } else {
-            console.log("No data available");
-          }
-        } catch (error) {
-          console.error("Error getting document:", error);
+      const worldRef = ref(db, `mundo/${editingWorld.id}`);
+      const unsubscribe = onValue(worldRef, (snapshot) => {
+        const worldData = snapshot.val();
+        if (worldData) {
+          setWorldName(worldData.name);
+          setCreatorName(worldData.criador);
+          setSystemName(worldData.sistema);
+          setNotes(worldData.notes);
         }
-      };
-      fetchData();
+      });
+      return () => unsubscribe();
     }
   }, [editingWorld, db]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const worldsRef = ref(db, 'mundo');
-    const newWorldRef = push(worldsRef); // Obtém uma referência de um novo nó com uma chave exclusiva gerada automaticamente
-    const worldKey = newWorldRef.key; // Obtém a chave gerada automaticamente
 
-    // Agora, você pode definir os dados usando a chave
-    set(ref(db, `mundo/${worldKey}`), {
-      name: worldName,
-      notes: notes,
-      criador: creatorName,
-      sistema: systemName
-    }).then(() => {
-      // Se a criação do mundo for bem-sucedida, exibe os detalhes no console
-      console.log('Mundo criado com sucesso!');
-      console.log('Nome do Mundo:', worldName);
-      console.log('Criador:', creatorName);
-      console.log('Sistema:', systemName);
-      // Define a mensagem de sucesso no estado
-      setSuccessMessage('Mundo criado com sucesso!');
-      // Limpa os campos do formulário após o envio
-      setWorldName('');
-      setCreatorName('');
-      setSystemName('');
-      setNotes('');
-      setShowRedirectButton(true); // Set the state to show the redirect button
-    }).catch((error) => {
-      // Se ocorrer um erro durante a criação do mundo, exibe o erro no console
-      console.error('Erro ao criar mundo:', error);
-      // Define a mensagem de erro no estado
-      setSuccessMessage('Erro ao criar mundo. Verifique o console para mais detalhes.');
-    });
+    if (editingWorld) {
+      const worldRef = ref(db, `mundo/${editingWorld.id}`);
+      set(worldRef, {
+        name: worldName,
+        notes: notes,
+        criador: creatorName,
+        sistema: systemName,
+      })
+        .then(() => {
+          console.log('World updated successfully');
+          setSuccessMessage('World updated successfully');
+          setWorldName('');
+          setCreatorName('');
+          setSystemName('');
+          setNotes('');
+          setEditingWorld(null);
+          setShowRedirectButton(true);
+        })
+        .catch((error) => {
+          console.error('Error updating world:', error);
+          setSuccessMessage('Error updating world. Check the console for details.');
+        });
+    } else {
+      const newWorldRef = push(worldsRef);
+      const worldKey = newWorldRef.key;
+
+      set(ref(db, `mundo/${worldKey}`), {
+        name: worldName,
+        notes: notes,
+        criador: creatorName,
+        sistema: systemName,
+      })
+        .then(() => {
+          console.log('World created successfully');
+          setSuccessMessage('World created successfully');
+          setWorldName('');
+          setCreatorName('');
+          setSystemName('');
+          setNotes('');
+          setShowRedirectButton(true);
+        })
+        .catch((error) => {
+          console.error('Error creating world:', error);
+          setSuccessMessage('Error creating world. Check the console for details.');
+        });
+    }
   };
 
   return (
