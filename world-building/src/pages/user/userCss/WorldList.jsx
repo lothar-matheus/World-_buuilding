@@ -47,6 +47,7 @@ const WorldList = () => {
             <p>Criador: {world.criador}</p>
             <p>Sistema: {world.sistema}</p>
             <p>Notas: {world.notes}</p>
+            <button>Explorar</button>
             <button onClick={() => handleEditWorld(world)}>Editar</button>
             <button onClick={() => handleDeleteWorld(world.id)}>Excluir</button>
           </li>
