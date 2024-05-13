@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getDatabase, ref, onValue, remove } from 'firebase/database';
 import { useNavigate } from 'react-router-dom';
 import firebaseConfigWorld from '../../../firebaseWorld';
-
+import WorldDetails from './WorldDetails';
 const WorldList = () => {
   const [worlds, setWorlds] = useState([]);
   const db = getDatabase();
@@ -36,6 +36,9 @@ const WorldList = () => {
   const handleEditWorld = (world) => {
     navigate('/create-world', { state: { editingWorld: world } });
   };
+  const handleExploreWorld = (world) => {
+    navigate('/world-details', { state: { selectedWorld: world } });
+  };
 
   return (
     <div>
@@ -47,7 +50,7 @@ const WorldList = () => {
             <p>Criador: {world.criador}</p>
             <p>Sistema: {world.sistema}</p>
             <p>Notas: {world.notes}</p>
-            <button>Explorar</button>
+            <button onClick={() => handleExploreWorld(world)}>Explorar</button>
             <button onClick={() => handleEditWorld(world)}>Editar</button>
             <button onClick={() => handleDeleteWorld(world.id)}>Excluir</button>
           </li>

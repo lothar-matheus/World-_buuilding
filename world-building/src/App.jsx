@@ -4,6 +4,7 @@ import Create from './pages/Create';
 import Login from './pages/Login'; // Importe o componente Login
 import CreateWorld from './pages/user/CreateWorld'
 import WorldList from './pages/user/userCss/WorldList';
+import WorldDetails from './pages/user/userCss/WorldDetails';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/create-world" element={<CreateWorld />} />
           <Route path="/world-list" element={<WorldList />} />
+          <Route path="/world-details" element={<WorldDetails />} />
 
           
           <Route
