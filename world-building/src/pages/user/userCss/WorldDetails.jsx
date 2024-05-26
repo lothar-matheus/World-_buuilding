@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { ref as dbRef, set, push } from 'firebase/database';
-import { storage, database } from '../../../firebaseDatabase'
+import { ref as dbRef, set, push, get } from 'firebase/database';
+import { storage, database } from '../../../firebaseDatabase';
 
 const WorldDetails = () => {
   const location = useLocation();
@@ -11,6 +11,22 @@ const WorldDetails = () => {
   const [modalType, setModalType] = useState('');
   const [inputValue, setInputValue] = useState('');
   const [imageUpload, setImageUpload] = useState(null);
+  const [backgroundUrl, setBackgroundUrl] = useState('');
+
+  useEffect(() => {
+    // Fetch the background URL from Firebase when the component mounts
+    const fetchBackgroundUrl = async () => {
+      const backgroundUrlRef = dbRef(database, `worlds/${selectedWorld.id}/backgroundUrl`);
+      const snapshot = await get(backgroundUrlRef);
+      if (snapshot.exists()) {
+        setBackgroundUrl(snapshot.val());
+      }
+    };
+
+    if (selectedWorld.id) {
+      fetchBackgroundUrl();
+    }
+  }, [selectedWorld.id]);
 
   const openModal = (type) => {
     setModalType(type);
@@ -54,11 +70,12 @@ const WorldDetails = () => {
           getDownloadURL(snapshot.ref)
             .then((downloadURL) => {
               console.log('Image uploaded successfully. URL:', downloadURL);
-              // Salvar a URL no banco de dados
-              const imageRef = dbRef(database, `worlds/${selectedWorld.id}/backgroundUrl`);
-              set(imageRef, downloadURL)
+              // Save the URL to the database
+              const imageUrlRef = dbRef(database, `worlds/${selectedWorld.id}/backgroundUrl`);
+              set(imageUrlRef, downloadURL)
                 .then(() => {
                   console.log('Image URL saved to database');
+                  setBackgroundUrl(downloadURL); // Update the background URL state
                 })
                 .catch((error) => {
                   console.error('Error saving image URL:', error);
@@ -75,7 +92,7 @@ const WorldDetails = () => {
   };
 
   return (
-    <div>
+    <div className="world-background" style={{ backgroundImage: `url(${backgroundUrl})` }}>
       <h1>{selectedWorld.name}</h1>
       <p>{selectedWorld.notes}</p>
       <input type="file" onChange={handleImageUpload} />

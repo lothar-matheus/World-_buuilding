@@ -157,3 +157,9 @@ input[type="password"] {
 label {
   font-weight: bold;
 }
+.world-background {
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  padding: 2rem;
+}
