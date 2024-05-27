@@ -235,3 +235,33 @@ label {
   background-color: #8f6a46;
   color: #f2efe9;
 }
+
+.secLore {
+  text-align: left;
+  margin-left: 2rem;
+}
+
+.secLore h2 {
+  font-size: 1.5rem; /* Ajusta o tamanho do texto do cabeçalho */
+}
+
+.secLore button {
+  display: block;
+  margin: 0.5rem 0; /* Ajusta a margem entre os botões */
+  padding: 0.3rem 0.6rem; /* Ajusta o tamanho do padding dos botões */
+  font-size: 0.9rem; /* Ajusta o tamanho do texto dos botões */
+  font-family: 'MedievalSharp', cursive;
+  background-color: #6b4c2f;
+  color: #f2efe9;
+  border: 2px solid #3d2c1d;
+  border-radius: 8px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  text-align: left;
+}
+
+.secLore button:hover {
+  background-color: #8f6a46;
+  color: #f2efe9;
+}
