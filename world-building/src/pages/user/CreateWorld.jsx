@@ -95,7 +95,7 @@ const CreateWorld = () => {
   };
 
   return (
-    <div>
+    <div className='divLogin'>
       <h1>Criar Mundo</h1>
       {successMessage && <p>{successMessage}</p>}
       <form onSubmit={handleSubmit}>

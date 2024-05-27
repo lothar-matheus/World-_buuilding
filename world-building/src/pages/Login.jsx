@@ -42,7 +42,7 @@ function Login() {
   }
 
   return (
-    <div>
+    <div className='divLogin'>
       <h1>Login</h1>
       <input
         type="email"
