@@ -13,6 +13,8 @@ const WorldDetails = () => {
   const [descriptionValue, setDescriptionValue] = useState('');
   const [imageUpload, setImageUpload] = useState(null);
   const [locationImageUpload, setLocationImageUpload] = useState(null);
+  const [characterImageUpload, setCharacterImageUpload] = useState(null);
+  const [characterPdfUpload, setCharacterPdfUpload] = useState(null);
   const [backgroundUrl, setBackgroundUrl] = useState('');
   const [items, setItems] = useState([]);
 
@@ -41,6 +43,8 @@ const WorldDetails = () => {
     setInputValue('');
     setDescriptionValue('');
     setLocationImageUpload(null);
+    setCharacterImageUpload(null);
+    setCharacterPdfUpload(null);
   };
 
   const handleInputChange = (e) => {
@@ -61,13 +65,23 @@ const WorldDetails = () => {
     setLocationImageUpload(file);
   };
 
+  const handleCharacterImageUpload = (e) => {
+    const file = e.target.files[0];
+    setCharacterImageUpload(file);
+  };
+
+  const handleCharacterPdfUpload = (e) => {
+    const file = e.target.files[0];
+    setCharacterPdfUpload(file);
+  };
+
   const saveItem = () => {
     if (inputValue.trim() !== '') {
       const itemsRef = dbRef(database, `worlds/${selectedWorld.id}/${modalType}`);
       const newItemRef = push(itemsRef);
       const itemData = {
         content: inputValue,
-        description: modalType === 'location' ? descriptionValue : '',
+        description: modalType === 'location' || modalType === 'character' ? descriptionValue : '',
         timestamp: Date.now()
       };
       set(newItemRef, itemData)
@@ -75,6 +89,13 @@ const WorldDetails = () => {
           console.log(`${modalType} added successfully`);
           if (modalType === 'location' && locationImageUpload) {
             uploadLocationImage(newItemRef.key);
+          } else if (modalType === 'character') {
+            if (characterImageUpload) {
+              uploadCharacterImage(newItemRef.key);
+            }
+            if (characterPdfUpload) {
+              uploadCharacterPdf(newItemRef.key);
+            }
           } else {
             closeModal();
           }
@@ -109,6 +130,56 @@ const WorldDetails = () => {
       })
       .catch((error) => {
         console.error('Error uploading image:', error);
+      });
+  };
+
+  const uploadCharacterImage = (itemId) => {
+    const imageRef = storageRef(storage, `worlds/${selectedWorld.id}/characters/${itemId}/image`);
+    uploadBytes(imageRef, characterImageUpload)
+      .then((snapshot) => {
+        getDownloadURL(snapshot.ref)
+          .then((downloadURL) => {
+            const itemRef = dbRef(database, `worlds/${selectedWorld.id}/character/${itemId}`);
+            set(itemRef, { content: inputValue, description: descriptionValue, imageUrl: downloadURL, timestamp: Date.now() })
+              .then(() => {
+                console.log('Character image URL saved to database');
+                closeModal();
+              })
+              .catch((error) => {
+                console.error('Error saving character image URL:', error);
+              });
+          })
+          .catch((error) => {
+            console.error('Error getting download URL:', error);
+          });
+      })
+      .catch((error) => {
+        console.error('Error uploading image:', error);
+      });
+  };
+
+  const uploadCharacterPdf = (itemId) => {
+    const pdfRef = storageRef(storage, `worlds/${selectedWorld.id}/characters/${itemId}/pdf`);
+    uploadBytes(pdfRef, characterPdfUpload)
+      .then((snapshot) => {
+        getDownloadURL(snapshot.ref)
+          .then((downloadURL) => {
+            const itemRef = dbRef(database, `worlds/${selectedWorld.id}/character/${itemId}`);
+            set(itemRef, { content: inputValue, description: descriptionValue, pdfUrl: downloadURL, timestamp: Date.now() })
+              .then(() => {
+                console.log('Character PDF URL saved to database');
+                closeModal();
+              })
+              .catch((error) => {
+                console.error('Error saving character PDF URL:', error);
+              });
+          })
+          .catch((error) => {
+            console.error('Error getting download URL:', error);
+          });
+      })
+      .catch((error) => {
+        console.error('Error uploading PDF:', error);
       });
   };
 
@@ -185,10 +256,24 @@ const WorldDetails = () => {
           <div className="modal-content">
             <h3>Add {modalType}</h3>
             <input type="text" value={inputValue} onChange={handleInputChange} placeholder="Name" />
-            {modalType === 'location' && (
+            {(modalType === 'location' || modalType === 'character') && (
               <>
-                <textarea value={descriptionValue} onChange={handleDescriptionChange} placeholder="Description" />
-                <input type="file" onChange={handleLocationImageUpload} className="custom-file-input" />
+                <textarea
+                  value={descriptionValue}
+                  onChange={handleDescriptionChange}
+                  placeholder="Description"
+                  rows="4"
+                ></textarea>
+                <label>
+                  Upload Image
+                  <input type="file" onChange={modalType === 'location' ? handleLocationImageUpload : handleCharacterImageUpload} className="custom-file-input" />
+                </label>
+                {modalType === 'character' && (
+                  <label>
+                    Upload PDF
+                    <input type="file" onChange={handleCharacterPdfUpload} className="custom-file-input" />
+                  </label>
+                )}
               </>
             )}
             <button onClick={saveItem}>Save</button>
@@ -203,11 +288,14 @@ const WorldDetails = () => {
           <ul>
             {items.map(item => (
               <li key={item.id}>
-                <div>
-                  <strong>{item.content}</strong>
-                  {item.description && <p>{item.description}</p>}
-                  {item.imageUrl && <img src={item.imageUrl} alt={item.content} className="location-thumbnail" />}
-                </div>
+                <p>{item.content}</p>
+                {item.description && <p>{item.description}</p>}
+                {item.imageUrl && <img src={item.imageUrl} alt={item.content} className="location-thumbnail" />}
+                {item.pdfUrl && (
+                  <a href={item.pdfUrl} target="_blank" rel="noopener noreferrer">
+                    View PDF
+                  </a>
+                )}
               </li>
             ))}
           </ul>
