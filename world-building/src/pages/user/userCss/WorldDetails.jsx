@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { ref as dbRef, set, push, get, child } from 'firebase/database';
+import { ref as dbRef, set, push, get } from 'firebase/database';
 import { storage, database } from '../../../firebaseDatabase';
 
 const WorldDetails = () => {
@@ -10,7 +10,9 @@ const WorldDetails = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState('');
   const [inputValue, setInputValue] = useState('');
+  const [descriptionValue, setDescriptionValue] = useState('');
   const [imageUpload, setImageUpload] = useState(null);
+  const [locationImageUpload, setLocationImageUpload] = useState(null);
   const [backgroundUrl, setBackgroundUrl] = useState('');
   const [items, setItems] = useState([]);
 
@@ -37,10 +39,26 @@ const WorldDetails = () => {
   const closeModal = () => {
     setShowModal(false);
     setInputValue('');
+    setDescriptionValue('');
+    setLocationImageUpload(null);
   };
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
+  };
+
+  const handleDescriptionChange = (e) => {
+    setDescriptionValue(e.target.value);
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    setImageUpload(file);
+  };
+
+  const handleLocationImageUpload = (e) => {
+    const file = e.target.files[0];
+    setLocationImageUpload(file);
   };
 
   const saveItem = () => {
@@ -49,13 +67,19 @@ const WorldDetails = () => {
       const newItemRef = push(itemsRef);
       const itemData = {
         content: inputValue,
+        description: modalType === 'location' ? descriptionValue : '',
         timestamp: Date.now()
       };
       set(newItemRef, itemData)
         .then(() => {
           console.log(`${modalType} added successfully`);
-          closeModal();
+          if (modalType === 'location' && locationImageUpload) {
+            uploadLocationImage(newItemRef.key);
+          } else {
+            closeModal();
+          }
           setInputValue('');
+          setDescriptionValue('');
         })
         .catch((error) => {
           console.error(`Error adding ${modalType}:`, error);
@@ -63,9 +87,29 @@ const WorldDetails = () => {
     }
   };
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    setImageUpload(file);
+  const uploadLocationImage = (itemId) => {
+    const imageRef = storageRef(storage, `worlds/${selectedWorld.id}/locations/${itemId}`);
+    uploadBytes(imageRef, locationImageUpload)
+      .then((snapshot) => {
+        getDownloadURL(snapshot.ref)
+          .then((downloadURL) => {
+            const itemRef = dbRef(database, `worlds/${selectedWorld.id}/location/${itemId}`);
+            set(itemRef, { content: inputValue, description: descriptionValue, imageUrl: downloadURL, timestamp: Date.now() })
+              .then(() => {
+                console.log('Location image URL saved to database');
+                closeModal();
+              })
+              .catch((error) => {
+                console.error('Error saving location image URL:', error);
+              });
+          })
+          .catch((error) => {
+            console.error('Error getting download URL:', error);
+          });
+      })
+      .catch((error) => {
+        console.error('Error uploading image:', error);
+      });
   };
 
   const uploadImage = () => {
@@ -76,7 +120,6 @@ const WorldDetails = () => {
           getDownloadURL(snapshot.ref)
             .then((downloadURL) => {
               console.log('Image uploaded successfully. URL:', downloadURL);
-              // Save the URL to the database
               const imageUrlRef = dbRef(database, `worlds/${selectedWorld.id}/backgroundUrl`);
               set(imageUrlRef, downloadURL)
                 .then(() => {
@@ -118,7 +161,7 @@ const WorldDetails = () => {
     <div className="world-background" style={{ backgroundImage: `url(${backgroundUrl})` }}>
       <h1>{selectedWorld.name}</h1>
       <p>{selectedWorld.notes}</p>
-      <input type="file" onChange={handleImageUpload} />
+      <input type="file" onChange={handleImageUpload} className="custom-file-input" />
       <button onClick={uploadImage}>Add Background</button>
 
       <div>
@@ -141,7 +184,13 @@ const WorldDetails = () => {
         <div className="modal">
           <div className="modal-content">
             <h3>Add {modalType}</h3>
-            <input type="text" value={inputValue} onChange={handleInputChange} />
+            <input type="text" value={inputValue} onChange={handleInputChange} placeholder="Name" />
+            {modalType === 'location' && (
+              <>
+                <textarea value={descriptionValue} onChange={handleDescriptionChange} placeholder="Description" />
+                <input type="file" onChange={handleLocationImageUpload} className="custom-file-input" />
+              </>
+            )}
             <button onClick={saveItem}>Save</button>
             <button onClick={closeModal}>Cancel</button>
           </div>
@@ -153,7 +202,13 @@ const WorldDetails = () => {
           <h3>{modalType.charAt(0).toUpperCase() + modalType.slice(1)} List</h3>
           <ul>
             {items.map(item => (
-              <li key={item.id}>{item.content}</li>
+              <li key={item.id}>
+                <div>
+                  <strong>{item.content}</strong>
+                  {item.description && <p>{item.description}</p>}
+                  {item.imageUrl && <img src={item.imageUrl} alt={item.content} className="location-thumbnail" />}
+                </div>
+              </li>
             ))}
           </ul>
         </div>

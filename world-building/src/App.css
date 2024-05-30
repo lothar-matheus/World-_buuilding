@@ -245,3 +245,24 @@ input[type="file"] {
   background-color: #8f6a46;
   color: #f2efe9;
 }
+
+.custom-file-input {
+  display: block;
+  margin: 1rem auto;
+  padding: 0.5rem;
+  font-size: 1rem;
+  font-family: 'Old Standard TT', serif;
+  background-color: #f2efe9;
+  color: #3d2700;
+  border: 1px solid #3d2700;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.location-thumbnail {
+  max-width: 50px;
+  max-height: 50px;
+  margin-top: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
