@@ -3,6 +3,9 @@ import { getDatabase, ref, onValue, remove } from 'firebase/database';
 import { useNavigate } from 'react-router-dom';
 import firebaseConfigWorld from '../../../firebaseWorld';
 import WorldDetails from './WorldDetails';
+import { Link } from 'react-router-dom';
+import Welcome from '../Welcome';
+
 const WorldList = () => {
   const [worlds, setWorlds] = useState([]);
   const db = getDatabase();
@@ -43,6 +46,9 @@ const WorldList = () => {
   return (
     <div>
       <h1>Mundos Criados</h1>
+      
+      <button onClick={()=> navigate('../welcome')}>Voltar ao início</button>
+      
       <ul>
         {worlds.map((world) => (
           <li key={world.id}>
