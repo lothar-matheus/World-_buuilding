@@ -8,6 +8,9 @@ body {
   background-color: #d9c4a6;
   color: #3d2c1d;
   font-family: 'Old Standard TT', serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 /* Estilo do cabeçalho */
@@ -17,6 +20,7 @@ h1 {
   text-align: center;
   margin-top: 2rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  color: #3d2c1d;
 }
 
 /* Estilo do parágrafo */
@@ -24,6 +28,11 @@ p {
   font-size: 1.2rem;
   text-align: center;
   margin: 1rem 0;
+  line-height: 1.5;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  color: #3d2c1d;
 }
 
 /* Estilo do botão */
@@ -83,97 +92,96 @@ input[type="password"] {
 
 label {
   font-weight: bold;
-}/* App.css */
-
-/* Fontes */
-@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&family=Old+Standard+TT&display=swap');
-
-/* Estilos gerais */
-body {
-  background-color: #d9c4a6;
   color: #3d2c1d;
-  font-family: 'Old Standard TT', serif;
 }
 
-/* Estilo do cabeçalho */
-h1 {
-  font-family: 'MedievalSharp', cursive;
-  font-size: 3rem;
-  text-align: center;
-  margin-top: 2rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-/* Estilo do parágrafo */
-p {
-  font-size: 1.2rem;
-  text-align: center;
-  margin: 1rem 0;
-}
-
-/* Estilo do botão */
-button {
-  display: block;
-  margin: 2rem auto;
-  padding: 1rem 2rem;
-  font-size: 1.2rem;
-  font-family: 'MedievalSharp', cursive;
-  background-color: #6b4c2f;
-  color: #d9c4a6;
-  border: none;
-  border-radius: 5px;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #8f6a46;
-}
-
-/* Estilo do link */
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-/* Estilos para os formulários */
-form {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 2rem;
-  background-color: #f2efe9;
-  border: 1px solid #6b4c2f;
-  border-radius: 5px;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-input[type="text"],
-input[type="email"],
-input[type="password"] {
-  display: block;
-  width: 100%;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
-  border: 1px solid #6b4c2f;
-  border-radius: 3px;
-  font-family: 'Old Standard TT', serif;
-}
-
-label {
-  font-weight: bold;
-}
 .world-background {
   background-size: cover;
   background-position: center;
   min-height: 100vh;
   padding: 2rem;
-<<<<<<< HEAD
-=======
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
+input[type="file"] {
+  margin: 1rem auto;
+  display: block;
+}
 
-/*css para formulários*/
+.secLore {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.secLore h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  font-family: 'MedievalSharp', cursive;
+  color: #3d2c1d;
+}
+
+.secLore button {
+  display: inline-block;
+  margin: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  font-family: 'MedievalSharp', cursive;
+  background-color: #6b4c2f;
+  color: #f2efe9;
+  border: 2px solid #3d2c1d;
+  border-radius: 8px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  text-align: center;
+}
+
+.secLore button:hover {
+  background-color: #8f6a46;
+  color: #f2efe9;
+}
+
+/* Estilo do modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background-color: #f2efe9;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.modal-content h3 {
+  margin-bottom: 1.5rem;
+  font-family: 'MedievalSharp', cursive;
+  color: #3d2c1d;
+}
+
+.modal-content input[type="text"] {
+  margin-bottom: 1rem;
+}
+
+.modal-content button {
+  margin: 0.5rem;
+}
+
 .divLogin {
   max-width: 400px;
   margin: 2rem auto;
@@ -236,35 +244,4 @@ label {
 .divLogin button:hover {
   background-color: #8f6a46;
   color: #f2efe9;
-}
-
-.secLore {
-  text-align: left;
-  margin-left: 2rem;
-}
-
-.secLore h2 {
-  font-size: 1.5rem; /* Ajusta o tamanho do texto do cabeçalho */
-}
-
-.secLore button {
-  display: block;
-  margin: 0.5rem 0; /* Ajusta a margem entre os botões */
-  padding: 0.3rem 0.6rem; /* Ajusta o tamanho do padding dos botões */
-  font-size: 0.9rem; /* Ajusta o tamanho do texto dos botões */
-  font-family: 'MedievalSharp', cursive;
-  background-color: #6b4c2f;
-  color: #f2efe9;
-  border: 2px solid #3d2c1d;
-  border-radius: 8px;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  text-align: left;
-}
-
-.secLore button:hover {
-  background-color: #8f6a46;
-  color: #f2efe9;
->>>>>>> 02014861ec6fd9afeb9c5080be37b382dbe1d62f
 }

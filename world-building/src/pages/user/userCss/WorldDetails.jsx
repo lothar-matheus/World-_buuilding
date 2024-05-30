@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { ref as dbRef, set, push, get } from 'firebase/database';
+import { ref as dbRef, set, push, get, child } from 'firebase/database';
 import { storage, database } from '../../../firebaseDatabase';
 
 const WorldDetails = () => {
@@ -12,6 +12,7 @@ const WorldDetails = () => {
   const [inputValue, setInputValue] = useState('');
   const [imageUpload, setImageUpload] = useState(null);
   const [backgroundUrl, setBackgroundUrl] = useState('');
+  const [items, setItems] = useState([]);
 
   useEffect(() => {
     // Fetch the background URL from Firebase when the component mounts
@@ -96,6 +97,23 @@ const WorldDetails = () => {
     }
   };
 
+  const fetchItems = async (type) => {
+    if (selectedWorld.id) {
+      const itemsRef = dbRef(database, `worlds/${selectedWorld.id}/${type}`);
+      const snapshot = await get(itemsRef);
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        const itemList = Object.keys(data).map(key => ({
+          id: key,
+          ...data[key]
+        }));
+        setItems(itemList);
+      } else {
+        setItems([]); // No items found
+      }
+    }
+  };
+
   return (
     <div className="world-background" style={{ backgroundImage: `url(${backgroundUrl})` }}>
       <h1>{selectedWorld.name}</h1>
@@ -105,9 +123,18 @@ const WorldDetails = () => {
 
       <div>
         <h2>Sections</h2>
-        <button onClick={() => openModal('story')}>Add Story</button>
-        <button onClick={() => openModal('character')}>Add Character</button>
-        <button onClick={() => openModal('location')}>Add Location</button>
+        <div>
+          <button onClick={() => openModal('story')}>Add Story</button>
+          <button onClick={() => fetchItems('story')}>Show Stories</button>
+        </div>
+        <div>
+          <button onClick={() => openModal('character')}>Add Character</button>
+          <button onClick={() => fetchItems('character')}>Show Characters</button>
+        </div>
+        <div>
+          <button onClick={() => openModal('location')}>Add Location</button>
+          <button onClick={() => fetchItems('location')}>Show Locations</button>
+        </div>
       </div>
 
       {showModal && (
@@ -118,6 +145,17 @@ const WorldDetails = () => {
             <button onClick={saveItem}>Save</button>
             <button onClick={closeModal}>Cancel</button>
           </div>
+        </div>
+      )}
+
+      {items.length > 0 && (
+        <div className="items-list">
+          <h3>{modalType.charAt(0).toUpperCase() + modalType.slice(1)} List</h3>
+          <ul>
+            {items.map(item => (
+              <li key={item.id}>{item.content}</li>
+            ))}
+          </ul>
         </div>
       )}
     </div>
