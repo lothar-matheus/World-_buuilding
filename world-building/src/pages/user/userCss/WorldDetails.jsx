@@ -133,30 +133,30 @@ const WorldDetails = () => {
       });
   };
 
-  const uploadCharacterImage = (itemId) => {
-    const imageRef = storageRef(storage, `worlds/${selectedWorld.id}/characters/${itemId}/image`);
-    uploadBytes(imageRef, characterImageUpload)
-      .then((snapshot) => {
-        getDownloadURL(snapshot.ref)
-          .then((downloadURL) => {
-            const itemRef = dbRef(database, `worlds/${selectedWorld.id}/character/${itemId}`);
-            set(itemRef, { content: inputValue, description: descriptionValue, imageUrl: downloadURL, timestamp: Date.now() })
-              .then(() => {
-                console.log('Character image URL saved to database');
-                closeModal();
-              })
-              .catch((error) => {
-                console.error('Error saving character image URL:', error);
-              });
-          })
-          .catch((error) => {
-            console.error('Error getting download URL:', error);
-          });
-      })
-      .catch((error) => {
-        console.error('Error uploading image:', error);
-      });
-  };
+const uploadCharacterImage = (itemId) => {
+  const imageRef = storageRef(storage, `worlds/${selectedWorld.id}/characters/${itemId}/image`);
+  uploadBytes(imageRef, characterImageUpload)
+    .then((snapshot) => {
+      getDownloadURL(snapshot.ref)
+        .then((downloadURL) => {
+          const itemRef = dbRef(database, `worlds/${selectedWorld.id}/characters/${itemId}`);
+          set(itemRef, { content: inputValue, description: descriptionValue, imageUrl: downloadURL, timestamp: Date.now() })
+            .then(() => {
+              console.log('Character image URL saved to database');
+              closeModal();
+            })
+            .catch((error) => {
+              console.error('Error saving character image URL:', error);
+            });
+        })
+        .catch((error) => {
+          console.error('Error getting download URL:', error);
+        });
+    })
+    .catch((error) => {
+      console.error('Error uploading image:', error);
+    });
+};
 
   const uploadCharacterPdf = (itemId) => {
     const pdfRef = storageRef(storage, `worlds/${selectedWorld.id}/characters/${itemId}/pdf`);
