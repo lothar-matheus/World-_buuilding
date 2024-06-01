@@ -6,11 +6,15 @@
 /* Estilos gerais */
 body {
   background-color: #d9c4a6;
-  color: #3d2c1d;
+  color: #2d1b0f;  /* Marrom mais escuro */
   font-family: 'Old Standard TT', serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  background-image: url('./img/background.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 /* Estilo do cabeçalho */
@@ -20,7 +24,7 @@ h1 {
   text-align: center;
   margin-top: 2rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  color: #3d2c1d;
+  color: #ffffff;  /* Marrom mais escuro */
 }
 
 /* Estilo do parágrafo */
@@ -32,7 +36,8 @@ p {
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
-  color: #3d2c1d;
+  color: #2d1b0f;  /* Marrom mais escuro */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);  /* Adicionando sombra */
 }
 
 /* Estilo do botão */
@@ -86,13 +91,13 @@ input[type="password"] {
   border-radius: 5px;
   font-family: 'Old Standard TT', serif;
   background-color: #f2efe9;
-  color: #3d2c1d;
+  color: #2d1b0f;  /* Marrom mais escuro */
   box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 label {
   font-weight: bold;
-  color: #3d2c1d;
+  color: #2d1b0f;  /* Marrom mais escuro */
 }
 
 .world-background {
@@ -105,6 +110,10 @@ label {
   align-items: center;
   justify-content: center;
   text-align: center;
+  color: #ffffff;
+}
+.world-background p{
+  color: #ffffff;
 }
 
 input[type="file"] {
@@ -121,7 +130,7 @@ input[type="file"] {
   font-size: 1.8rem;
   margin-bottom: 1rem;
   font-family: 'MedievalSharp', cursive;
-  color: #3d2c1d;
+  color: #2d1b0f;  /* Marrom mais escuro */
 }
 
 .secLore button {
@@ -171,7 +180,7 @@ input[type="file"] {
 .modal-content h3 {
   margin-bottom: 1.5rem;
   font-family: 'MedievalSharp', cursive;
-  color: #3d2c1d;
+  color: #2d1b0f;  /* Marrom mais escuro */
 }
 
 .modal-content input[type="text"] {
@@ -196,7 +205,7 @@ input[type="file"] {
   text-align: center;
   margin-bottom: 2rem;
   font-family: 'MedievalSharp', cursive;
-  color: #3d2c1d;
+  color: #2d1b0f;  /* Marrom mais escuro */
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
@@ -210,7 +219,7 @@ input[type="file"] {
   border-radius: 5px;
   font-family: 'Old Standard TT', serif;
   background-color: #f2efe9;
-  color: #3d2c1d;
+  color: #2d1b0f;  /* Marrom mais escuro */
   box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
@@ -246,23 +255,74 @@ input[type="file"] {
   color: #f2efe9;
 }
 
-.custom-file-input {
-  display: block;
-  margin: 1rem auto;
-  padding: 0.5rem;
-  font-size: 1rem;
-  font-family: 'Old Standard TT', serif;
+.divRegister {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
   background-color: #f2efe9;
-  color: #3d2700;
-  border: 1px solid #3d2700;
-  border-radius: 0.5rem;
-  cursor: pointer;
+  border: 2px solid #6b4c2f;
+  border-radius: 8px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.location-thumbnail {
-  max-width: 50px;
-  max-height: 50px;
-  margin-top: 0.5rem;
-  border: 1px solid #ccc;
+.divRegister h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-family: 'MedievalSharp', cursive;
+  color: #2d1b0f;  /* Marrom mais escuro */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.divRegister input[type="text"],
+.divRegister input[type="email"],
+.divRegister input[type="password"] {
+  display: block;
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border: 2px solid #6b4c2f;
   border-radius: 5px;
+  font-family: 'Old Standard TT', serif;
+  background-color: #f2efe9;
+  color: #2d1b0f;  /* Marrom mais escuro */
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.divRegister input[type="text"]:focus,
+.divRegister input[type="email"]:focus,
+.divRegister input[type="password"]:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(107, 76, 47, 0.5);
+}
+
+.divRegister input::placeholder {
+  color: #6b4c2f;
+  font-style: italic;
+}
+
+.divRegister button {
+  display: block;
+  margin: 1rem auto 0;
+  padding: 0.8rem 1.5rem;
+  font-size: 1.2rem;
+  font-family: 'MedievalSharp', cursive;
+  background-color: #6b4c2f;
+  color: #f2efe9;
+  border: 2px solid #3d2c1d;
+  border-radius: 8px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.divRegister button:hover {
+  background-color: #8f6a46;
+  color: #f2efe9;
+}
+
+.divDetails{
+  color: #6b4c2f;
+  font-style: italic;
+
 }

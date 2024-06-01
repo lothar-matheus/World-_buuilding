@@ -49,16 +49,19 @@ const WorldList = () => {
       
       <button onClick={()=> navigate('../welcome')}>Voltar ao início</button>
       
-      <ul>
+      <ul className='worldul'>
         {worlds.map((world) => (
           <li key={world.id}>
-            <h2>{world.name}</h2>
+            <div className='divLogin'>
+            <h2 className='worldName'>{world.name}</h2>
             <p>Criador: {world.criador}</p>
             <p>Sistema: {world.sistema}</p>
             <p>Notas: {world.notes}</p>
             <button onClick={() => handleExploreWorld(world)}>Explorar</button>
             <button onClick={() => handleEditWorld(world)}>Editar</button>
             <button onClick={() => handleDeleteWorld(world.id)}>Excluir</button>
+            </div>
+            
           </li>
         ))}
       </ul>

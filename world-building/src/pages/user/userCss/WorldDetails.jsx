@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { ref as dbRef, set, push, get } from 'firebase/database';
+import { ref as dbRef, set, push, get, remove } from 'firebase/database';
 import { storage, database } from '../../../firebaseDatabase';
 
 const WorldDetails = () => {
@@ -17,6 +17,7 @@ const WorldDetails = () => {
   const [characterPdfUpload, setCharacterPdfUpload] = useState(null);
   const [backgroundUrl, setBackgroundUrl] = useState('');
   const [items, setItems] = useState([]);
+  const [itemToDelete, setItemToDelete] = useState(null);
 
   useEffect(() => {
     // Fetch the background URL from Firebase when the component mounts
@@ -105,6 +106,18 @@ const WorldDetails = () => {
         .catch((error) => {
           console.error(`Error adding ${modalType}:`, error);
         });
+    }
+  };
+
+  const deleteItem = async (itemId) => {
+    try {
+      const itemRef = dbRef(database, `worlds/${selectedWorld.id}/${modalType}/${itemId}`);
+      await remove(itemRef);
+      console.log(`${modalType} excluído com sucesso`);
+      setItemToDelete(null);
+      fetchItems(modalType);
+    } catch (error) {
+      console.error(`Erro ao excluir ${modalType}:`, error);
     }
   };
 
@@ -227,6 +240,10 @@ const uploadCharacterImage = (itemId) => {
       }
     }
   };
+  
+  const handleDeleteItem = (itemId) => {
+    setItemToDelete(itemId);
+  };
 
   return (
     <div className="world-background" style={{ backgroundImage: `url(${backgroundUrl})` }}>
@@ -236,16 +253,16 @@ const uploadCharacterImage = (itemId) => {
       <button onClick={uploadImage}>Add Background</button>
 
       <div>
-        <h2>Sections</h2>
-        <div>
+        <h2>Adicionar informações ao mundo</h2>
+        <div className='divLogin'>
           <button onClick={() => openModal('story')}>Add Story</button>
           <button onClick={() => fetchItems('story')}>Show Stories</button>
         </div>
-        <div>
+        <div className='divLogin'>
           <button onClick={() => openModal('character')}>Add Character</button>
           <button onClick={() => fetchItems('character')}>Show Characters</button>
         </div>
-        <div>
+        <div className='divLogin'>
           <button onClick={() => openModal('location')}>Add Location</button>
           <button onClick={() => fetchItems('location')}>Show Locations</button>
         </div>
@@ -282,6 +299,7 @@ const uploadCharacterImage = (itemId) => {
         </div>
       )}
 
+
       {items.length > 0 && (
         <div className="items-list">
           <h3>{modalType.charAt(0).toUpperCase() + modalType.slice(1)} List</h3>
@@ -301,7 +319,38 @@ const uploadCharacterImage = (itemId) => {
           </ul>
         </div>
       )}
+
+      {itemToDelete && (
+        <div className="modal">
+          <div className="modal-content">
+            <h3>Confirmar Exclusão</h3>
+            <p>Tem certeza que deseja excluir este item?</p>
+            <button onClick={() => deleteItem(itemToDelete)}>Excluir</button>
+            <button onClick={() => setItemToDelete(null)}>Cancelar</button>
+          </div>
+        </div>
+      )}{items.length > 0 && (
+        <div className="items-list">
+          <h3>{modalType.charAt(0).toUpperCase() + modalType.slice(1)} List</h3>
+          <ul>
+            {items.map(item => (
+              <li key={item.id}>
+                <p>{item.content}</p>
+                {item.description && <p>{item.description}</p>}
+                {item.imageUrl && <img src={item.imageUrl} alt={item.content} className="location-thumbnail" />}
+                {item.pdfUrl && (
+                  <a href={item.pdfUrl} target="_blank" rel="noopener noreferrer">
+                    View PDF
+                  </a>
+                )}
+                <button onClick={() => handleDeleteItem(item.id)}>Excluir</button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
+    
   );
 };
 
