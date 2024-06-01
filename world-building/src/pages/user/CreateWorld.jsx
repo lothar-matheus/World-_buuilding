@@ -3,6 +3,9 @@ import { getDatabase, ref, push, set, onValue } from 'firebase/database';
 import { useLocation } from 'react-router-dom';
 import firebaseConfigWorld from '../../firebaseWorld';
 import { Link } from 'react-router-dom';
+//import { getAuth, onAuthStateChanged } from '../../firebaseAuth'
+import { getAuth } from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth';
 
 const CreateWorld = () => {
   const [worldName, setWorldName] = useState('');
@@ -14,6 +17,8 @@ const CreateWorld = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const db = getDatabase();
   const location = useLocation();
+  const [userId, setUserId] = useState(null);
+ 
 
   useEffect(() => {
     if (location.state && location.state.editingWorld) {
@@ -25,6 +30,19 @@ const CreateWorld = () => {
       setEditingWorld({ id, name, criador, sistema, notes });
     }
   }, [location.state]);
+
+  //efeito para pegar o uid do usuário:
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(getAuth(), (user) => {
+      if (user) {
+        setUserId(user.uid);
+      } else {
+        setUserId(null);
+      }
+    });
+
+    return unsubscribe;
+  }, []); 
 
   useEffect(() => {
     if (editingWorld) {
@@ -44,53 +62,56 @@ const CreateWorld = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const worldsRef = ref(db, 'mundo');
-
-    if (editingWorld) {
-      const worldRef = ref(db, `mundo/${editingWorld.id}`);
-      set(worldRef, {
-        name: worldName,
-        notes: notes,
-        criador: creatorName,
-        sistema: systemName,
-      })
-        .then(() => {
-          console.log('World updated successfully');
-          setSuccessMessage('World updated successfully');
-          setWorldName('');
-          setCreatorName('');
-          setSystemName('');
-          setNotes('');
-          setEditingWorld(null);
-          setShowRedirectButton(true);
+  
+    if (userId) { // Verifique se o userId está disponível
+      if (editingWorld) {
+        const worldRef = ref(db, `usuarios/${userId}/mundos/${editingWorld.id}`);
+        set(worldRef, {
+          name: worldName,
+          notes: notes,
+          criador: creatorName,
+          sistema: systemName,
         })
-        .catch((error) => {
-          console.error('Error updating world:', error);
-          setSuccessMessage('Error updating world. Check the console for details.');
-        });
+          .then(() => {
+            console.log('World updated successfully');
+            setSuccessMessage('World updated successfully');
+            setWorldName('');
+            setCreatorName('');
+            setSystemName('');
+            setNotes('');
+            setEditingWorld(null);
+            setShowRedirectButton(true);
+          })
+          .catch((error) => {
+            console.error('Error updating world:', error);
+            setSuccessMessage('Error updating world. Check the console for details.');
+          });
+      } else {
+        const newWorldRef = push(ref(db, `usuarios/${userId}/mundos`));
+        set(newWorldRef, {
+          name: worldName,
+          notes: notes,
+          criador: creatorName,
+          sistema: systemName,
+        })
+          .then(() => {
+            console.log('World created successfully');
+            setSuccessMessage('World created successfully');
+            setWorldName('');
+            setCreatorName('');
+            setSystemName('');
+            setNotes('');
+            setShowRedirectButton(true);
+          })
+          .catch((error) => {
+            console.error('Error creating world:', error);
+            setSuccessMessage('Error creating world. Check the console for details.');
+          });
+      }
     } else {
-      const newWorldRef = push(worldsRef);
-      const worldKey = newWorldRef.key;
-
-      set(ref(db, `mundo/${worldKey}`), {
-        name: worldName,
-        notes: notes,
-        criador: creatorName,
-        sistema: systemName,
-      })
-        .then(() => {
-          console.log('World created successfully');
-          setSuccessMessage('World created successfully');
-          setWorldName('');
-          setCreatorName('');
-          setSystemName('');
-          setNotes('');
-          setShowRedirectButton(true);
-        })
-        .catch((error) => {
-          console.error('Error creating world:', error);
-          setSuccessMessage('Error creating world. Check the console for details.');
-        });
+      // Trate o caso em que o userId não está disponível (usuário não autenticado)
+      console.error('User not authenticated');
+      setSuccessMessage('User not authenticated. Please log in to create or edit worlds.');
     }
   };
 

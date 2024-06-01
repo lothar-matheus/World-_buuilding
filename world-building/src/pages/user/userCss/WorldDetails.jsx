@@ -4,6 +4,7 @@ import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage
 import { ref as dbRef, set, push, get, remove } from 'firebase/database';
 import { storage, database } from '../../../firebaseDatabase';
 
+
 const WorldDetails = () => {
   const location = useLocation();
   const selectedWorld = location.state?.selectedWorld || {};
@@ -18,6 +19,9 @@ const WorldDetails = () => {
   const [backgroundUrl, setBackgroundUrl] = useState('');
   const [items, setItems] = useState([]);
   const [itemToDelete, setItemToDelete] = useState(null);
+
+
+  
 
   useEffect(() => {
     // Fetch the background URL from Firebase when the component mounts
