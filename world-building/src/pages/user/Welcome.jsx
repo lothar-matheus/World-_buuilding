@@ -5,7 +5,6 @@ const Welcome = ({ email }) => {
   return (
     <div>
       <h1>Bem-vindo!</h1>
-      <p>Olá, {email}</p>
 
       <Link to="/create-world"> {/* Atualizado para redirecionar para "/create-world" */}
         <button>Clique aqui para criar um mundo</button>

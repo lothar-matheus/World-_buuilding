@@ -14,41 +14,41 @@ function Create() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
 
-function criarUserLogar(email, password, confirmPassword) {
-  if (password !== confirmPassword) {
-    alert('As senhas não coincidem. Por favor, tente novamente.');
-    return;
-  }
-
-  createUserWithEmailAndPassword(auth, email, password)
+  function criarUserLogar(email, password, confirmPassword) {
+    // Expressão regular para validar a força da senha
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
+  
+    // Verifica se a senha atende aos requisitos
+    if (!passwordRegex.test(password)) {
+      alert('A senha deve conter pelo menos uma letra minúscula, uma letra maiúscula e um número.');
+      return;
+    }
+  
+    // Verifica se as senhas coincidem
+    if (password !== confirmPassword) {
+      alert('As senhas não coincidem. Por favor, tente novamente.');
+      return;
+    }
+  
+    createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user;
       console.log(user);
       alert('Conta criada com sucesso!');
-      navigate('/login')
+      navigate('/login');
     })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
+
+      // Verifica se o erro é devido ao e-mail já estar em uso
+      if (errorCode === 'auth/email-already-in-use') {
+        console.log('E-mail já cadastrado. Tente novamente com um e-mail diferente.');
+        return; // Retorna sem exibir o alerta de erro
+      }
+
       console.log(errorMessage);
       alert('Erro ao criar conta: ' + errorMessage);
-    });
-}
-
-function logarComGoogle() {
-  signInWithPopup(auth, provider)
-    .then((result) => {
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      const token = credential.accessToken;
-      const user = result.user;
-      console.log(token);
-      console.log(user);
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      const email = error.email;
-      const credential = GoogleAuthProvider.credentialFromError(error);
     });
 }
 
@@ -77,7 +77,6 @@ function logarComGoogle() {
       <button onClick={() => criarUserLogar(email, password, confirmPassword)}>
         Vamos ingressar!
       </button>
-      <button onClick={logarComGoogle}>Login com Google</button>
     </div>
   );
 }
