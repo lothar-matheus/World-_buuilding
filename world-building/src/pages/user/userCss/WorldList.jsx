@@ -62,7 +62,7 @@ const WorldList = () => {
   };
 
   return (
-    <div>
+    <div className='worList'>
       <h1>Mundos Criados</h1>
       <button onClick={() => navigate('../welcome')}>Voltar ao início</button>
       <ul className='worldul'>

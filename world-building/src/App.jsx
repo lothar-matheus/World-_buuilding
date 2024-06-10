@@ -24,8 +24,8 @@ function App() {
             path="/"
             element={
               <>
-                <h1>Bem-Vindo World Building!</h1>
-                <p>Um sistema onde você pode organizar seus mundos fictícios.</p>
+                <h1>World   Building!</h1>
+                <p className='pApp'>Wolrd Building uma plataforma dedicada a criar mundos fictícios.</p>
                 <Link to="/create">
                   <button className='comeceAgora'>Comece por aqui!</button>
                 </Link>
